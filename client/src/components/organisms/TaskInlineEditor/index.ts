@@ -1,0 +1,1 @@
+export { TaskInlineEditor } from './TaskInlineEditor';
