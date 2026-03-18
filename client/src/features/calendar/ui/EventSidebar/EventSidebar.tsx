@@ -1,16 +1,31 @@
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store';
-import { setSidebarOpen, setEventModalOpen, setEditModalTaskId, setSearchQuery } from '@/features/calendar/model';
-import { MONTHS } from '@/shared/utils/calendar';
-import { LABEL_COLORS } from '@/features/calendar/constants/labels';
+import {
+  setSidebarOpen,
+  setEventModalOpen,
+  setEventModalSelectedTime,
+  setEditModalTaskId,
+  setSearchQuery,
+  setSidebarTypeFilter,
+  toggleSidebarColorFilter,
+  resetSidebarColorFilter,
+  toggleSidebarCountryFilter,
+  resetSidebarCountryFilter,
+} from '@/features/calendar/model';
+import { setAuthModalOpen } from '@/features/auth/model';
+import { isTaskInPast } from '@/features/calendar/lib/taskTimeRules';
+import { isPastDay as isPastDayRule } from '@/features/calendar/lib/rules';
 import { HOLIDAY_COUNTRIES } from '@/features/calendar/constants/countries';
 import { SearchBar } from '@/components/molecules/SearchBar';
+import { LabelColorPicker } from '@/components/molecules/LabelColorPicker';
 import type { TaskItem, PublicHoliday } from '@/features/calendar/types';
+import { useT } from '@/features/i18n';
 import {
   Backdrop,
   Panel,
   SidebarHeader,
   SidebarTitle,
+  HeaderActions,
   AddBtn,
   CloseBtn,
   SearchWrap,
@@ -18,8 +33,6 @@ import {
   TypeFilterBtn,
   FilterSection,
   FilterLabel,
-  ColorFilters,
-  ColorFilterBtn,
   CountryFilters,
   CountryFilterBtn,
   ResetFilter,
@@ -37,25 +50,25 @@ import {
   Footer,
 } from './EventSidebar.styled';
 
-function formatTaskDate(task: TaskItem): string {
+function formatTaskDate(task: TaskItem, monthAbbrev: string[]): string {
   const [y, m, d] = task.date.split('-').map(Number);
-  const monthName = MONTHS[m - 1]?.slice(0, 3) || '';
+  const monthName = monthAbbrev[m - 1] ?? '';
   const time =
     task.startTime && task.endTime ? ` • ${task.startTime} - ${task.endTime}` : '';
   return `${d} ${monthName} ${y}${time}`;
 }
 
-function formatHolidayDate(dateKey: string): string {
+function formatHolidayDate(dateKey: string, monthAbbrev: string[]): string {
   const [y, m, d] = dateKey.split('-').map(Number);
-  const monthName = MONTHS[m - 1]?.slice(0, 3) || '';
+  const monthName = monthAbbrev[m - 1] ?? '';
   return `${d} ${monthName} ${y}`;
 }
+
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 type SidebarEntry =
   | { type: 'event'; date: string; task: TaskItem }
   | { type: 'holiday'; date: string; holiday: PublicHoliday };
-
-type SidebarTypeFilter = 'all' | 'events' | 'holidays';
 
 export function EventSidebar() {
   const dispatch = useAppDispatch();
@@ -63,24 +76,17 @@ export function EventSidebar() {
   const searchQuery = useAppSelector((s) => s.ui.searchQuery);
   const tasks = useAppSelector((s) => s.tasks.items);
   const holidaysByDate = useAppSelector((s) => s.holidays.byDate);
-  const [colorFilter, setColorFilter] = useState<string[]>([]);
-  const [countryFilter, setCountryFilter] = useState<string[]>([]);
-  const [typeFilter, setTypeFilter] = useState<SidebarTypeFilter>('all');
-
-  const toggleColor = (hex: string) => {
-    setColorFilter((prev) =>
-      prev.includes(hex) ? prev.filter((c) => c !== hex) : [...prev, hex]
-    );
-  };
-
-  const toggleCountry = (code: string) => {
-    setCountryFilter((prev) =>
-      prev.includes(code) ? prev.filter((c) => c !== code) : [...prev, code]
-    );
-  };
+  const colorFilter = useAppSelector((s) => s.ui.sidebarColorFilter);
+  const countryFilter = useAppSelector((s) => s.ui.sidebarCountryFilter);
+  const typeFilter = useAppSelector((s) => s.ui.sidebarTypeFilter);
+  const currentUser = useAppSelector((s) => s.auth.user);
+  const t = useT();
+  const monthAbbrev = Array.from({ length: 12 }, (_, i) => t(`date.monthAbbrev.${i}`));
 
   const filteredTasks = useMemo(() => {
     let list = tasks;
+    const now = new Date();
+    list = list.filter((t) => !isTaskInPast(t, now));
     if (colorFilter.length > 0) {
       list = list.filter((t) =>
         (t.labels || []).some((l) => colorFilter.includes(l))
@@ -97,6 +103,10 @@ export function EventSidebar() {
     const list: PublicHoliday[] = [];
     for (const listForDate of Object.values(holidaysByDate)) {
       for (const h of listForDate) {
+        // Defensive: ignore corrupted/non-standard holiday payloads.
+        if (typeof (h as any)?.date !== 'string' || !ISO_DATE_RE.test((h as any).date)) continue;
+        if (typeof (h as any)?.countryCode !== 'string' || !(h as any).countryCode.trim()) continue;
+        if (isPastDayRule(h.date)) continue;
         if (countryFilter.length === 0 || countryFilter.includes(h.countryCode)) {
           list.push(h);
         }
@@ -109,20 +119,28 @@ export function EventSidebar() {
     const entries: SidebarEntry[] = [];
     if (typeFilter === 'all' || typeFilter === 'events') {
       for (const task of filteredTasks) {
-        entries.push({ type: 'event', date: task.date, task });
+        // Backend data may be temporarily inconsistent (e.g. during bootstrap errors),
+        // so we defensively guard against missing `date`.
+        if (typeof task.date === 'string') entries.push({ type: 'event', date: task.date, task });
       }
     }
     if (typeFilter === 'all' || typeFilter === 'holidays') {
       for (const holiday of holidayList) {
-        entries.push({ type: 'holiday', date: holiday.date, holiday });
+        if (typeof holiday.date === 'string') entries.push({ type: 'holiday', date: holiday.date, holiday });
       }
     }
-    entries.sort((a, b) => a.date.localeCompare(b.date));
+    entries.sort((a, b) => (a.date ?? '').localeCompare(b.date ?? ''));
     return entries;
   }, [filteredTasks, holidayList, typeFilter]);
 
   const openModal = () => {
+    if (!currentUser) {
+      dispatch(setAuthModalOpen(true));
+      dispatch(setSidebarOpen(false));
+      return;
+    }
     dispatch(setEditModalTaskId(null));
+    dispatch(setEventModalSelectedTime(null));
     dispatch(setEventModalOpen(true));
     dispatch(setSidebarOpen(false));
   };
@@ -134,102 +152,86 @@ export function EventSidebar() {
       <Backdrop onClick={() => dispatch(setSidebarOpen(false))} />
       <Panel>
         <SidebarHeader>
-          <SidebarTitle>Всі події</SidebarTitle>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+          <SidebarTitle>{t('eventSidebar.title')}</SidebarTitle>
+          <HeaderActions>
             <AddBtn type="button" onClick={openModal}>
-              + Додати
+              {t('eventSidebar.add')}
             </AddBtn>
             <CloseBtn
               type="button"
               onClick={() => dispatch(setSidebarOpen(false))}
-              aria-label="Закрити"
+              aria-label={t('eventSidebar.closeAria')}
             >
               ×
             </CloseBtn>
-          </div>
+          </HeaderActions>
         </SidebarHeader>
 
         <SearchWrap>
           <SearchBar
             value={searchQuery}
             onChange={(v) => dispatch(setSearchQuery(v))}
-            placeholder="Filter tasks..."
+            placeholder={t('eventSidebar.searchPlaceholder')}
           />
         </SearchWrap>
 
         <FilterSection>
-          <FilterLabel>Події / Свята</FilterLabel>
+          <FilterLabel>{t('eventSidebar.typeFilterLabel')}</FilterLabel>
           <TypeFilterWrap>
             <TypeFilterBtn
               type="button"
-              $active={typeFilter === 'all'}
-              onClick={() => setTypeFilter('all')}
+              active={typeFilter === 'all'}
+              onClick={() => dispatch(setSidebarTypeFilter('all'))}
             >
-              Всі
+              {t('eventSidebar.typeAll')}
             </TypeFilterBtn>
             <TypeFilterBtn
               type="button"
-              $active={typeFilter === 'events'}
-              onClick={() => setTypeFilter('events')}
+              active={typeFilter === 'events'}
+              onClick={() => dispatch(setSidebarTypeFilter('events'))}
             >
-              Події
+              {t('eventSidebar.typeEvents')}
             </TypeFilterBtn>
             <TypeFilterBtn
               type="button"
-              $active={typeFilter === 'holidays'}
-              onClick={() => setTypeFilter('holidays')}
+              active={typeFilter === 'holidays'}
+              onClick={() => dispatch(setSidebarTypeFilter('holidays'))}
             >
-              Свята
+              {t('eventSidebar.typeHolidays')}
             </TypeFilterBtn>
           </TypeFilterWrap>
         </FilterSection>
 
         <FilterSection>
-          <FilterLabel>Фільтр за кольором</FilterLabel>
-          <ColorFilters>
-            {LABEL_COLORS.map((opt) => (
-              <ColorFilterBtn
-                key={opt.value}
-                type="button"
-                $active={colorFilter.includes(opt.value)}
-                onClick={() => toggleColor(opt.value)}
-              >
-                <span
-                  style={{
-                    width: 10,
-                    height: 10,
-                    borderRadius: '50%',
-                    background: opt.value,
-                  }}
-                />
-                {opt.label}
-              </ColorFilterBtn>
-            ))}
-          </ColorFilters>
+          <FilterLabel>{t('eventSidebar.colorFilterLabel')}</FilterLabel>
+          <LabelColorPicker
+            value={colorFilter}
+            onToggle={(hex) => dispatch(toggleSidebarColorFilter(hex))}
+          />
           {colorFilter.length > 0 && (
-            <ResetFilter type="button" onClick={() => setColorFilter([])}>
-              × Скинути фільтр кольору
+            <ResetFilter type="button" onClick={() => dispatch(resetSidebarColorFilter())}>
+              {t('eventSidebar.resetColorFilter')}
             </ResetFilter>
           )}
         </FilterSection>
 
         <FilterSection>
-          <FilterLabel>Фільтр за країною (свята)</FilterLabel>
+          <FilterLabel>{t('eventSidebar.countryFilterLabel')}</FilterLabel>
           <CountryFilters>
             {HOLIDAY_COUNTRIES.map(({ code, name }) => (
               <CountryFilterBtn
                 key={code}
                 type="button"
-                $active={countryFilter.includes(code)}
-                onClick={() => toggleCountry(code)}
+                active={countryFilter.includes(code)}
+                onClick={() => dispatch(toggleSidebarCountryFilter(code))}
               >
-                {name}
+                {t(name)}
               </CountryFilterBtn>
             ))}
           </CountryFilters>
           {countryFilter.length > 0 && (
-            <ResetFilter type="button" onClick={() => setCountryFilter([])}>
-              × Скинути фільтр країн
+            <ResetFilter type="button" onClick={() => dispatch(resetSidebarCountryFilter())}>
+              {t('eventSidebar.resetCountryFilter')}
             </ResetFilter>
           )}
         </FilterSection>
@@ -260,7 +262,7 @@ export function EventSidebar() {
                 />
                 <EventContent>
                   <EventTitle>{entry.task.title}</EventTitle>
-                  <EventMeta>{formatTaskDate(entry.task)}</EventMeta>
+                  <EventMeta>{formatTaskDate(entry.task, monthAbbrev)}</EventMeta>
                 </EventContent>
               </EventItem>
             ) : (
@@ -268,21 +270,21 @@ export function EventSidebar() {
                 <HolidayContent>
                   <HolidayTitle>{entry.holiday.localName || entry.holiday.name}</HolidayTitle>
                   <HolidayMeta>
-                    {formatHolidayDate(entry.date)} • {entry.holiday.countryCode}
+                    {formatHolidayDate(entry.date, monthAbbrev)} • {entry.holiday.countryCode}
                   </HolidayMeta>
                 </HolidayContent>
               </HolidayItem>
             )
           )}
           {combinedList.length === 0 && (
-            <EmptyState>Немає подій і свят за вибраними фільтрами</EmptyState>
+            <EmptyState>{t('eventSidebar.empty')}</EmptyState>
           )}
         </EventList>
 
         <Footer>
-          Подій: <strong>{filteredTasks.length}</strong>
+          {t('eventSidebar.footerEvents')}: <strong>{filteredTasks.length}</strong>
           {' · '}
-          Свят: <strong>{holidayList.length}</strong>
+          {t('eventSidebar.footerHolidays')}: <strong>{holidayList.length}</strong>
         </Footer>
       </Panel>
     </>

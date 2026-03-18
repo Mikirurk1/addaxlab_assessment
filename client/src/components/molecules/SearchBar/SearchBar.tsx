@@ -1,5 +1,5 @@
 import type { InputHTMLAttributes } from 'react';
-import { Input } from '@/components/atoms/Input';
+import { Field } from '@/components/atoms/Field';
 
 interface SearchBarProps {
   value: string;
@@ -11,12 +11,13 @@ interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = 'Search...',
+  placeholder,
   variant = 'default',
   ...rest
 }: SearchBarProps & Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'>) {
   return (
-    <Input
+    <Field
+      bare
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}

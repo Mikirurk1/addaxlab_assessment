@@ -1,0 +1,2 @@
+export { CalendarEventGhost } from './CalendarEventGhost';
+

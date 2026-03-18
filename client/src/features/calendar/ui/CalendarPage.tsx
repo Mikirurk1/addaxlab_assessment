@@ -1,20 +1,22 @@
 import { useAppSelector } from '@/store';
-import { useCalendarNavigation, useTasksByDate } from '@/features/calendar/hooks';
+import { useCalendarNavigation } from '@/features/calendar/hooks';
+import { selectFilteredHolidaysByDate, selectFilteredTasksByDate } from '@/features/calendar/model/selectors';
 import { CalendarLayout } from '@/components/templates/CalendarLayout';
-import { WEEKDAYS } from '@/shared/utils/calendar';
+import { useT } from '@/features/i18n';
 
 export function CalendarPage() {
-  const holidays = useAppSelector((state) => state.holidays.byDate);
+  const t = useT();
   const searchQuery = useAppSelector((state) => state.ui.searchQuery);
-  const tasksByDate = useTasksByDate();
+  const tasksByDate = useAppSelector(selectFilteredTasksByDate);
+  const holidaysFiltered = useAppSelector(selectFilteredHolidaysByDate);
   const { view, cells, title, goPrev, goNext, goToday, handleViewChange } = useCalendarNavigation();
 
   return (
     <CalendarLayout
-      weekdays={WEEKDAYS}
+      weekdays={Array.from({ length: 7 }, (_, i) => t(`date.weekdaysShort.${i}`))}
       cells={cells}
       tasksByDate={tasksByDate}
-      holidays={holidays}
+      holidays={holidaysFiltered}
       searchQuery={searchQuery}
       title={title}
       view={view}

@@ -41,15 +41,6 @@ export function formatDay(d: Date): string {
   return String(d.getDate());
 }
 
-export const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-export const MONTH_ABBREV = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-export const MONTHS = [
-  'January', 'February', 'March', 'April', 'May', 'June',
-  'July', 'August', 'September', 'October', 'November', 'December',
-];
-
 export interface CalendarCell {
   date: Date;
   dateKey: string;
@@ -58,7 +49,7 @@ export interface CalendarCell {
 }
 
 /** Returns 6×7 grid of calendar cells (prev month, current, next month). */
-export function getCalendarGrid(year: number, month: number): CalendarCell[] {
+export function getCalendarGrid(year: number, month: number, monthAbbrev: string[]): CalendarCell[] {
   const first = new Date(year, month, 1);
   const last = new Date(year, month + 1, 0);
   const firstDow = first.getDay();
@@ -81,7 +72,7 @@ export function getCalendarGrid(year: number, month: number): CalendarCell[] {
       cells.push({
         date,
         dateKey: toDateKey(date),
-        label: d === prevDays ? `${MONTH_ABBREV[prevMonth]} ${d}` : String(d),
+        label: d === prevDays ? `${monthAbbrev[prevMonth] ?? ''} ${d}` : String(d),
         isCurrentMonth: false,
       });
     } else if (i - firstDow < daysInMonth) {
@@ -99,7 +90,7 @@ export function getCalendarGrid(year: number, month: number): CalendarCell[] {
       cells.push({
         date,
         dateKey: toDateKey(date),
-        label: d === 1 ? `${MONTH_ABBREV[nextMonth]} ${d}` : String(d),
+        label: d === 1 ? `${monthAbbrev[nextMonth] ?? ''} ${d}` : String(d),
         isCurrentMonth: false,
       });
     }
@@ -116,25 +107,25 @@ export function getSundayOfWeek(d: Date): Date {
 }
 
 /** Returns 7 calendar cells for the week starting from Sunday (weekStart). */
-export function getWeekGrid(weekStart: Date): CalendarCell[] {
+export function getWeekGrid(weekStart: Date, monthAbbrev: string[]): CalendarCell[] {
   const cells: CalendarCell[] = [];
   for (let i = 0; i < 7; i++) {
     const date = new Date(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate() + i);
     const dateKey = toDateKey(date);
     const dayNum = date.getDate();
-    const label = dayNum === 1 || (i === 0 && dayNum > 7) ? `${MONTH_ABBREV[date.getMonth()]} ${dayNum}` : String(dayNum);
+    const label = dayNum === 1 || (i === 0 && dayNum > 7) ? `${monthAbbrev[date.getMonth()] ?? ''} ${dayNum}` : String(dayNum);
     cells.push({ date, dateKey, label, isCurrentMonth: true });
   }
   return cells;
 }
 
-/** Format week range for title, e.g. "Mar 10 – 16, 2018". */
-export function formatWeekRange(weekStart: Date): string {
+/** Format week range title. */
+export function formatWeekRange(weekStart: Date, monthAbbrev: string[]): string {
   const sun = weekStart;
   const sat = new Date(sun.getFullYear(), sun.getMonth(), sun.getDate() + 6);
   const sameMonth = sun.getMonth() === sat.getMonth();
   if (sameMonth) {
-    return `${MONTH_ABBREV[sun.getMonth()]} ${sun.getDate()} – ${sat.getDate()}, ${sun.getFullYear()}`;
+    return `${monthAbbrev[sun.getMonth()] ?? ''} ${sun.getDate()} – ${sat.getDate()}, ${sun.getFullYear()}`;
   }
-  return `${MONTH_ABBREV[sun.getMonth()]} ${sun.getDate()} – ${MONTH_ABBREV[sat.getMonth()]} ${sat.getDate()}, ${sun.getFullYear()}`;
+  return `${monthAbbrev[sun.getMonth()] ?? ''} ${sun.getDate()} – ${monthAbbrev[sat.getMonth()] ?? ''} ${sat.getDate()}, ${sun.getFullYear()}`;
 }

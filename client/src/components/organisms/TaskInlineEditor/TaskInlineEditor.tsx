@@ -29,6 +29,7 @@ export function TaskInlineEditor({
 
   return (
     <InlineInput
+      bare
       ref={inputRef}
       value={value}
       onChange={(e) => setValue(e.target.value)}

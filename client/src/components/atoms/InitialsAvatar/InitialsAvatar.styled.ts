@@ -16,3 +16,23 @@ export const AvatarCircle = styled.div<{ $bg: string; $size: number }>`
   border: 2px solid ${theme.colors.orange[500]};
   box-sizing: border-box;
 `;
+
+export const AvatarImageWrap = styled.div<{ $size: number }>`
+  width: ${(p) => p.$size}px;
+  height: ${(p) => p.$size}px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid ${theme.colors.orange[500]};
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: ${theme.colors.gray[200]};
+`;
+
+export const AvatarImg = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;

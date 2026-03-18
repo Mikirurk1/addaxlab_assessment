@@ -6,13 +6,24 @@ export interface TaskItem {
   labels?: string[];
   startTime?: string;
   endTime?: string;
+  createdBy?: {
+    name: string;
+    email: string;
+    nickname?: string;
+  };
   /** Country codes this event is tied to; empty = all countries. */
   countryCodes?: string[];
+  /** If set, this event is linked to a series (range/recurrence). */
+  seriesId?: string;
+  recurrence?: {
+    freq: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly';
+    byWeekDays?: number[];
+  };
   createdAt?: string;
   updatedAt?: string;
 }
 
-/** PublicHolidayV3Dto — Nager.Date API v3 (https://date.nager.at) */
+/** PublicHolidayV3Dto — Nager.Date API v3 (configured via `VITE_NAGER_DATE_API_URL`) */
 export interface PublicHoliday {
   date: string;
   localName: string;

@@ -1,5 +1,6 @@
-import { IconButton } from '@/components/atoms/IconButton';
-import { Nav, NavLeft, NavCenter, NavRight, MonthTitle, ViewToggle } from './MonthNavigator.styled';
+import { Button } from '@/components/atoms/Button';
+import { Nav, NavLeft, NavCenter, NavRight, MonthTitle, ViewToggle, NavSquareButton, TodayButton } from './MonthNavigator.styled';
+import { useT } from '@/features/i18n';
 
 interface MonthNavigatorProps {
   title: string;
@@ -18,28 +19,41 @@ export function MonthNavigator({
   onToday,
   onViewChange,
 }: MonthNavigatorProps) {
+  const t = useT();
   return (
     <Nav>
       <NavLeft>
-        <IconButton onClick={onToday}>Today</IconButton>
-        <IconButton onClick={onPrev} aria-label="Previous">
+        <TodayButton onClick={onToday}>{t('monthNavigator.today')}</TodayButton>
+        <NavSquareButton onClick={onPrev} aria-label={t('monthNavigator.previous')}>
           ‹
-        </IconButton>
-        <IconButton onClick={onNext} aria-label="Next">
+        </NavSquareButton>
+        <NavSquareButton onClick={onNext} aria-label={t('monthNavigator.next')}>
           ›
-        </IconButton>
+        </NavSquareButton>
       </NavLeft>
       <NavCenter>
         <MonthTitle>{title}</MonthTitle>
       </NavCenter>
       <NavRight>
         <ViewToggle>
-          <IconButton active={view === 'week'} data-active={view === 'week'} onClick={() => onViewChange('week')}>
-            Week
-          </IconButton>
-          <IconButton active={view === 'month'} data-active={view === 'month'} onClick={() => onViewChange('month')}>
-            Month
-          </IconButton>
+          <Button
+            active={view === 'week'}
+            data-active={view === 'week'}
+            disabled={view === 'week'}
+            aria-disabled={view === 'week'}
+            onClick={() => onViewChange('week')}
+          >
+            {t('monthNavigator.week')}
+          </Button>
+          <Button
+            active={view === 'month'}
+            data-active={view === 'month'}
+            disabled={view === 'month'}
+            aria-disabled={view === 'month'}
+            onClick={() => onViewChange('month')}
+          >
+            {t('monthNavigator.month')}
+          </Button>
         </ViewToggle>
       </NavRight>
     </Nav>

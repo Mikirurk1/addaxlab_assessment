@@ -1,30 +1,33 @@
-import { useCalendarData } from '@/features/calendar/hooks';
-import { AppHeader } from '@/features/calendar/ui/AppHeader';
-import { CalendarPage } from '@/features/calendar/ui/CalendarPage';
-import { EventModal } from '@/features/calendar/ui/EventModal';
+import { AppHeader, useAppBootstrapData } from '@/features/appShell';
+import { CalendarPage } from '@/features/calendar/app';
+import { ConflictModal, EventModal } from '@/features/calendar/modals';
 import { EventSidebar } from '@/features/calendar/ui/EventSidebar';
-import { AuthModal } from '@/features/calendar/ui/AuthModal';
+import { AdminModal, AuthModal } from '@/features/auth/ui';
+import { ToastViewport } from '@/features/notifications/ui/ToastViewport';
 import { Spinner } from '@/components/atoms/Spinner';
-import { AppRoot, Main } from '@/shared/ui/AppLayout.styled';
+import { AppRoot, Centered, Main } from '@/shared/ui/AppLayout.styled';
 
 function App() {
-  const { loading } = useCalendarData();
+  const { isInitialLoading } = useAppBootstrapData();
 
   return (
     <AppRoot>
       <AppHeader />
       <Main>
-        {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center', padding: 48 }}>
+        {isInitialLoading ? (
+          <Centered>
             <Spinner />
-          </div>
+          </Centered>
         ) : (
           <CalendarPage />
         )}
       </Main>
       <EventModal />
+      <ConflictModal />
       <EventSidebar />
       <AuthModal />
+      <AdminModal />
+      <ToastViewport />
     </AppRoot>
   );
 }

@@ -1,10 +1,11 @@
 /**
- * Nager.Date API v3 — https://date.nager.at
+ * Nager.Date API v3 (see `VITE_NAGER_DATE_API_URL`)
  */
 import { holidaysApi } from '@/shared/api/axiosInstance';
 import type { PublicHoliday, HolidaysByDate } from '@/features/calendar/types';
 
 const DEFAULT_COUNTRIES = ['US', 'UA', 'DE', 'GB', 'PL'];
+const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 async function fetchPublicHolidaysForCountry(
   year: number,
@@ -30,6 +31,9 @@ export async function fetchWorldwideHolidaysForYear(
   );
   for (const list of results) {
     for (const h of list) {
+      // Defensive guard: ignore unexpected API payloads.
+      if (typeof h?.date !== 'string' || !ISO_DATE_RE.test(h.date)) continue;
+      if (typeof h?.countryCode !== 'string' || !h.countryCode.trim()) continue;
       if (!byDate[h.date]) byDate[h.date] = [];
       byDate[h.date].push(h);
     }

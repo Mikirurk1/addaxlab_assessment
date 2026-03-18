@@ -1,0 +1,16 @@
+{
+  "name": "Calendar Tasks — Addax Assessment",
+  "short_name": "Calendar Tasks",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#111827",
+  "theme_color": "#111827",
+  "icons": [
+    {
+      "src": "/assets/images/icon/calendar-white.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}
+

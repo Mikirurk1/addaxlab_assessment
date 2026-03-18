@@ -1,26 +1,7 @@
 import styled from '@emotion/styled';
 import { theme } from '@/shared/styles/theme';
-
-export const Backdrop = styled.div`
-  position: fixed;
-  inset: 0;
-  background: ${theme.colors.overlay.medium};
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const ModalBox = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.radius.xl};
-  box-shadow: ${theme.shadow['2xl']};
-  width: 100%;
-  max-width: 32rem;
-  max-height: 90vh;
-  overflow-y: auto;
-  padding: ${theme.spacing[6]};
-`;
+import { Button } from '@/components/atoms/Button';
+import { Field } from '@/components/atoms/Field';
 
 export const ModalHeader = styled.div`
   display: flex;
@@ -36,17 +17,65 @@ export const ModalTitle = styled.h2`
   color: ${theme.colors.gray[800]};
 `;
 
-export const CloseBtn = styled.button`
-  padding: ${theme.spacing[1]};
+export const HeaderActions = styled.div`
+  display: inline-flex;
+  align-items: center;
+  gap: ${theme.spacing[2]};
+`;
+
+export const CloseBtn = styled(Button)`
+  width: 36px;
+  height: 36px;
+  padding: 0;
   border: none;
-  background: none;
-  cursor: pointer;
   border-radius: ${theme.radius.md};
+  background: transparent;
   color: ${theme.colors.gray[600]};
-  font-size: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
   line-height: 1;
-  &:hover {
+
+  &:hover:not(:disabled) {
     background: ${theme.colors.gray[100]};
+    color: ${theme.colors.gray[800]};
+  }
+`;
+
+export const HeaderIconAction = styled(Button)<{ $tone?: 'default' | 'danger' }>`
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${theme.radius.lg};
+  background: transparent;
+  border: 1px solid ${(p) => (p.$tone === 'danger' ? theme.colors.red[600] : theme.colors.gray[300])};
+  color: ${(p) => (p.$tone === 'danger' ? theme.colors.red[600] : theme.colors.gray[700])};
+
+  &:hover:not(:disabled) {
+    background: ${(p) =>
+      p.$tone === 'danger' ? 'rgba(220, 38, 38, 0.08)' : theme.colors.gray[100]};
+  }
+`;
+
+export const BtnDanger = styled(Button)`
+  flex: 1;
+  padding: ${theme.spacing[2]} ${theme.spacing[4]};
+  font-size: ${theme.font.size.sm};
+  border: 1px solid ${theme.colors.red[600]};
+  border-radius: ${theme.radius.lg};
+  background: ${theme.colors.red[600]};
+  color: ${theme.colors.white};
+  font-weight: ${theme.font.weight.medium};
+  &:hover:not(:disabled) {
+    background: ${theme.colors.red[600]};
+    filter: brightness(0.95);
+  }
+  &:disabled {
+    opacity: 0.5;
   }
 `;
 
@@ -62,24 +91,19 @@ export const Label = styled.label`
   margin-bottom: ${theme.spacing[2]};
 `;
 
-export const Input = styled.input`
+export const Input = styled(Field)`
   width: 100%;
-  padding: ${theme.spacing[2]} ${theme.spacing[3]};
-  font-size: ${theme.font.size.sm};
-  border: 1px solid ${theme.colors.gray[300]};
-  border-radius: ${theme.radius.lg};
-  box-sizing: border-box;
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.orange[500]};
-    box-shadow: 0 0 0 2px rgba(249, 115, 22, 0.2);
-  }
+  min-width: 0;
 `;
 
 export const Row = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${theme.spacing[3]};
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const ColorGrid = styled.div`
@@ -88,28 +112,33 @@ export const ColorGrid = styled.div`
   gap: ${theme.spacing[2]};
 `;
 
-export const ColorChip = styled.button<{ $active: boolean }>`
+export const CountryGrid = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: ${theme.spacing[2]};
+`;
+
+export const CountryChip = styled(Button)`
   padding: ${theme.spacing[2]} ${theme.spacing[4]};
   font-size: ${theme.font.size.sm};
   border-radius: ${theme.radius.lg};
   border: none;
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: ${theme.spacing[2]};
-  background: ${(p) => (p.$active ? theme.colors.gray[800] : theme.colors.gray[100])};
-  color: ${(p) => (p.$active ? theme.colors.white : theme.colors.gray[700])};
+  background: ${theme.colors.gray[100]};
+  color: ${theme.colors.gray[700]};
   font-weight: ${theme.font.weight.medium};
   &:hover {
-    background: ${(p) => (p.$active ? theme.colors.gray[700] : theme.colors.gray[200])};
+    background: ${theme.colors.gray[200]};
   }
-`;
-
-export const ColorDot = styled.span<{ $bg: string }>`
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: ${(p) => p.$bg};
+  &[data-active='true'] {
+    background: ${theme.colors.gray[800]};
+    color: ${theme.colors.white};
+    &:hover {
+      background: ${theme.colors.gray[700]};
+    }
+  }
 `;
 
 export const CheckboxBlock = styled.div`
@@ -126,13 +155,27 @@ export const CheckboxLabel = styled.label`
   cursor: pointer;
 `;
 
+export const CreatedByRow = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing[2]};
+  margin-top: ${theme.spacing[4]};
+  margin-bottom: ${theme.spacing[4]};
+  font-size: ${theme.font.size.sm};
+  color: ${theme.colors.gray[600]};
+`;
+
 export const Actions = styled.div`
   display: flex;
   gap: ${theme.spacing[3]};
-  margin-top: ${theme.spacing[6]};
+  margin-top: ${theme.spacing[2]};
+
+  @media (max-width: 640px) {
+    flex-direction: column-reverse;
+  }
 `;
 
-export const BtnSecondary = styled.button`
+export const BtnSecondary = styled(Button)`
   flex: 1;
   padding: ${theme.spacing[2]} ${theme.spacing[4]};
   font-size: ${theme.font.size.sm};
@@ -140,14 +183,13 @@ export const BtnSecondary = styled.button`
   border-radius: ${theme.radius.lg};
   background: ${theme.colors.white};
   color: ${theme.colors.gray[700]};
-  cursor: pointer;
   font-weight: ${theme.font.weight.medium};
   &:hover {
     background: ${theme.colors.gray[50]};
   }
 `;
 
-export const BtnPrimary = styled.button`
+export const BtnPrimary = styled(Button)`
   flex: 1;
   padding: ${theme.spacing[2]} ${theme.spacing[4]};
   font-size: ${theme.font.size.sm};
@@ -155,13 +197,12 @@ export const BtnPrimary = styled.button`
   border-radius: ${theme.radius.lg};
   background: ${theme.colors.orange[500]};
   color: ${theme.colors.white};
-  cursor: pointer;
   font-weight: ${theme.font.weight.medium};
   &:hover:not(:disabled) {
     background: ${theme.colors.orange[600]};
   }
   &:disabled {
     opacity: 0.5;
-    cursor: not-allowed;
   }
 `;
+

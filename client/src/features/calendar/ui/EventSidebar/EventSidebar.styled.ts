@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import { theme } from '@/shared/styles/theme';
+import { Button } from '@/components/atoms/Button';
 
 export const Backdrop = styled.div`
   position: fixed;
@@ -20,6 +21,10 @@ export const Panel = styled.aside`
   z-index: 50;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const SidebarHeader = styled.div`
@@ -30,6 +35,12 @@ export const SidebarHeader = styled.div`
   justify-content: space-between;
 `;
 
+export const HeaderActions = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
 export const SidebarTitle = styled.h2`
   margin: 0;
   font-size: ${theme.font.size.lg};
@@ -37,33 +48,37 @@ export const SidebarTitle = styled.h2`
   color: ${theme.colors.gray[800]};
 `;
 
-export const AddBtn = styled.button`
+export const AddBtn = styled(Button)`
   padding: 6px 12px;
   font-size: ${theme.font.size.sm};
   background: ${theme.colors.orange[500]};
   color: ${theme.colors.white};
   border: none;
   border-radius: ${theme.radius.md};
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: ${theme.spacing[1.5]};
   font-weight: ${theme.font.weight.medium};
+  height: 36px;
   transition: background 0.15s;
   &:hover {
     background: ${theme.colors.orange[600]};
   }
 `;
 
-export const CloseBtn = styled.button`
-  padding: ${theme.spacing[1]};
+export const CloseBtn = styled(Button)`
+  padding: 0;
+  width: 36px;
+  height: 36px;
   border: none;
   background: none;
-  cursor: pointer;
   border-radius: ${theme.radius.sm};
   color: ${theme.colors.gray[600]};
   font-size: 1.25rem;
   line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     background: ${theme.colors.gray[100]};
   }
@@ -84,18 +99,24 @@ export const TypeFilterWrap = styled.div`
   gap: ${theme.spacing[2]};
 `;
 
-export const TypeFilterBtn = styled.button<{ $active: boolean }>`
+export const TypeFilterBtn = styled(Button)`
   flex: 1;
   padding: 8px 12px;
   font-size: ${theme.font.size.xs};
   border-radius: ${theme.radius.md};
   border: 1px solid ${theme.colors.gray[200]};
-  cursor: pointer;
-  background: ${(p) => (p.$active ? theme.colors.orange[500] : theme.colors.white)};
-  color: ${(p) => (p.$active ? theme.colors.white : theme.colors.gray[700])};
+  background: ${theme.colors.white};
+  color: ${theme.colors.gray[700]};
   font-weight: ${theme.font.weight.medium};
   &:hover {
-    background: ${(p) => (p.$active ? theme.colors.orange[600] : theme.colors.gray[50])};
+    background: ${theme.colors.gray[50]};
+  }
+  &[data-active='true'] {
+    background: ${theme.colors.orange[500]};
+    color: ${theme.colors.white};
+    &:hover {
+      background: ${theme.colors.orange[600]};
+    }
   }
 `;
 
@@ -114,30 +135,7 @@ export const FilterLabel = styled.div`
   margin-bottom: ${theme.spacing[3]};
 `;
 
-export const ColorFilters = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${theme.spacing[2]};
-`;
-
-export const ColorFilterBtn = styled.button<{ $active: boolean }>`
-  padding: 6px 12px;
-  font-size: ${theme.font.size.xs};
-  border-radius: 9999px;
-  display: inline-flex;
-  align-items: center;
-  gap: ${theme.spacing[2]};
-  border: none;
-  cursor: pointer;
-  background: ${(p) => (p.$active ? theme.colors.gray[800] : theme.colors.gray[100])};
-  color: ${(p) => (p.$active ? theme.colors.white : theme.colors.gray[700])};
-  font-weight: ${theme.font.weight.medium};
-  &:hover {
-    background: ${(p) => (p.$active ? theme.colors.gray[700] : theme.colors.gray[200])};
-  }
-`;
-
-export const ResetFilter = styled.button`
+export const ResetFilter = styled(Button)`
   margin-top: ${theme.spacing[3]};
   padding: 6px 12px;
   font-size: ${theme.font.size.xs};
@@ -146,7 +144,6 @@ export const ResetFilter = styled.button`
   background: ${theme.colors.white};
   border: 1px solid ${theme.colors.gray[300]};
   border-radius: ${theme.radius.md};
-  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -164,19 +161,25 @@ export const CountryFilters = styled.div`
   gap: ${theme.spacing[2]};
 `;
 
-export const CountryFilterBtn = styled.button<{ $active: boolean }>`
+export const CountryFilterBtn = styled(Button)`
   padding: 6px 12px;
   font-size: ${theme.font.size.xs};
   border-radius: 9999px;
   display: inline-flex;
   align-items: center;
   border: none;
-  cursor: pointer;
-  background: ${(p) => (p.$active ? theme.colors.orange[500] : theme.colors.gray[100])};
-  color: ${(p) => (p.$active ? theme.colors.white : theme.colors.gray[700])};
+  background: ${theme.colors.gray[100]};
+  color: ${theme.colors.gray[700]};
   font-weight: ${theme.font.weight.medium};
   &:hover {
-    background: ${(p) => (p.$active ? theme.colors.orange[600] : theme.colors.gray[200])};
+    background: ${theme.colors.gray[200]};
+  }
+  &[data-active='true'] {
+    background: ${theme.colors.orange[500]};
+    color: ${theme.colors.white};
+    &:hover {
+      background: ${theme.colors.orange[600]};
+    }
   }
 `;
 

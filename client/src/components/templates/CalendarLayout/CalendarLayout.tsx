@@ -1,5 +1,6 @@
 import { MonthNavigator } from '@/components/molecules/MonthNavigator';
 import { CalendarGrid } from '@/components/organisms/CalendarGrid';
+import { WeekView } from '@/components/organisms/WeekView';
 import { Layout } from './CalendarLayout.styled';
 import type { TaskItem, HolidaysByDate } from '@/features/calendar/types';
 import type { CalendarCell } from '@/shared/utils/calendar';
@@ -43,14 +44,22 @@ export function CalendarLayout({
         onToday={onToday}
         onViewChange={onViewChange}
       />
-      <CalendarGrid
-        weekdays={weekdays}
-        cells={cells}
-        tasksByDate={tasksByDate}
-        holidays={holidays}
-        searchQuery={searchQuery}
-        minHeight={gridMinHeight}
-      />
+      {view === 'week' ? (
+        <WeekView
+          cells={cells}
+          tasksByDate={tasksByDate}
+          searchQuery={searchQuery}
+        />
+      ) : (
+        <CalendarGrid
+          weekdays={weekdays}
+          cells={cells}
+          tasksByDate={tasksByDate}
+          holidays={holidays}
+          searchQuery={searchQuery}
+          minHeight={gridMinHeight}
+        />
+      )}
     </Layout>
   );
 }

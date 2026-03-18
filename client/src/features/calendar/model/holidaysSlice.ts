@@ -33,6 +33,8 @@ const holidaysSlice = createSlice({
     builder
       .addCase(fetchHolidays.pending, (state) => {
         state.loading = true;
+        // Prevent stale/incorrect holiday data from being displayed after a failed refresh.
+        state.byDate = {};
       })
       .addCase(fetchHolidays.fulfilled, (state, action) => {
         state.byDate = action.payload;

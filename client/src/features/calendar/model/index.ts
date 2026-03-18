@@ -4,7 +4,10 @@ export { default as uiReducer } from './uiSlice';
 export {
   fetchTasks,
   createTask,
+  createTasksBulk,
   updateTask,
+  updateSeries,
+  detachTask,
   deleteTask,
   reorderTasks,
 } from './tasksSlice';
@@ -13,7 +16,15 @@ export {
   setSearchQuery,
   setEventModalOpen,
   setEventModalSelectedDate,
+  setEventModalSelectedTime,
   setEditModalTaskId,
   setSidebarOpen,
-  setAuthModalOpen,
+  setSidebarTypeFilter,
+  toggleSidebarColorFilter,
+  resetSidebarColorFilter,
+  toggleSidebarCountryFilter,
+  resetSidebarCountryFilter,
+  openConflictModal,
+  closeConflictModal,
+  setDraggingTaskId,
 } from './uiSlice';

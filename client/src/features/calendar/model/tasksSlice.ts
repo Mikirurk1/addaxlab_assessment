@@ -14,7 +14,10 @@ export const createTask = createAsyncThunk(
       labels?: string[];
       startTime?: string;
       endTime?: string;
+      createdBy?: { name: string; email: string };
       countryCodes?: string[];
+      seriesId?: string;
+      recurrence?: { freq: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'; byWeekDays?: number[] };
     },
     { dispatch }
   ) => {
@@ -32,11 +35,60 @@ export const updateTask = createAsyncThunk(
       payload,
     }: {
       id: string;
-      payload: { date?: string; title?: string; order?: number; labels?: string[]; startTime?: string; endTime?: string; countryCodes?: string[] };
+      payload: { date?: string; title?: string; order?: number; labels?: string[]; startTime?: string; endTime?: string; countryCodes?: string[]; seriesId?: string | null; recurrence?: { freq: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'; byWeekDays?: number[] } | null };
     },
     { dispatch }
   ) => {
     await tasksApi.updateTask(id, payload);
+    await dispatch(fetchTasks());
+  }
+);
+
+export const createTasksBulk = createAsyncThunk(
+  'tasks/createBulk',
+  async (
+    payload: {
+      tasks: Array<{
+        date: string;
+        title: string;
+        order?: number;
+        labels?: string[];
+        startTime?: string;
+        endTime?: string;
+        createdBy?: { name: string; email: string };
+        countryCodes?: string[];
+        seriesId?: string;
+        recurrence?: { freq: 'none' | 'daily' | 'weekly' | 'monthly' | 'yearly'; byWeekDays?: number[] };
+      }>;
+    },
+    { dispatch }
+  ) => {
+    await tasksApi.createTasksBulk(payload);
+    await dispatch(fetchTasks());
+  }
+);
+
+export const updateSeries = createAsyncThunk(
+  'tasks/updateSeries',
+  async (
+    {
+      seriesId,
+      payload,
+    }: {
+      seriesId: string;
+      payload: { title?: string; labels?: string[]; startTime?: string; endTime?: string; countryCodes?: string[] };
+    },
+    { dispatch }
+  ) => {
+    await tasksApi.updateSeries(seriesId, payload);
+    await dispatch(fetchTasks());
+  }
+);
+
+export const detachTask = createAsyncThunk(
+  'tasks/detach',
+  async (id: string, { dispatch }) => {
+    await tasksApi.detachTask(id);
     await dispatch(fetchTasks());
   }
 );

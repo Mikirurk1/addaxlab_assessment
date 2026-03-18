@@ -2,10 +2,11 @@ import styled from '@emotion/styled';
 import { theme } from '@/shared/styles/theme';
 
 /** Figma: border-r border-b border-gray-200 p-2, bg-gray-50/white, hover:bg-gray-100 */
-export const Cell = styled.div<{ $isCurrentMonth: boolean; $isToday?: boolean }>`
+export const Cell = styled.div<{ $isCurrentMonth: boolean; $isToday?: boolean; $disabled?: boolean }>`
   min-height: 0;
   background: ${(p) => {
     if (p.$isToday) return '#faf6f0';
+    if (p.$disabled) return theme.colors.gray[100];
     return p.$isCurrentMonth ? theme.colors.gray[50] : theme.colors.white;
   }};
   padding: ${theme.spacing[2]};
@@ -27,6 +28,15 @@ export const Cell = styled.div<{ $isCurrentMonth: boolean; $isToday?: boolean }>
     outline: 2px dashed #1976d2;
     outline-offset: -2px;
   }
+  ${(p) =>
+    p.$disabled &&
+    `
+      cursor: default;
+      opacity: 0.85;
+      &:hover {
+        background: ${theme.colors.gray[100]};
+      }
+    `}
 `;
 
 export const DayRow = styled.div`
@@ -38,11 +48,28 @@ export const DayRow = styled.div`
   flex-shrink: 0;
 `;
 
+export const ScrollArea = styled.div<{ $disabled?: boolean }>`
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: ${theme.spacing[1.5]};
+  cursor: ${(p) => (p.$disabled ? 'default' : 'pointer')};
+`;
+
 export const DayNumber = styled.span<{ $isCurrentMonth: boolean; $isToday?: boolean }>`
   font-size: ${theme.font.size.sm};
   font-weight: ${(p) => (p.$isToday ? theme.font.weight.semibold : theme.font.weight.medium)};
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: ${(p) => (p.$isToday ? '24px' : 'auto')};
+  height: ${(p) => (p.$isToday ? '24px' : 'auto')};
+  border-radius: 9999px;
+  background: ${(p) => (p.$isToday ? theme.colors.orange[600] : 'transparent')};
   color: ${(p) => {
-    if (p.$isToday) return theme.colors.gray[800];
+    if (p.$isToday) return theme.colors.white;
     return p.$isCurrentMonth ? theme.colors.gray[900] : theme.colors.gray[400];
   }};
 `;
@@ -56,43 +83,31 @@ export const CardCount = styled.span`
 `;
 
 export const HolidaysList = styled.div`
-  margin-bottom: ${theme.spacing[1.5]};
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
   gap: 4px;
 `;
 
-export const HolidayPill = styled.span`
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
-  line-height: 1.3;
-  color: #92400e;
-  background: #fef3c7;
-  border: 1px solid #fcd34d;
-  border-radius: ${theme.radius.sm};
-  padding: 2px 6px;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-export const HolidayPillMore = styled.span`
-  font-size: 10px;
-  color: ${theme.colors.gray[500]};
-  padding-left: 2px;
+export const CountryCode = styled.span`
+  color: #b45309;
+  font-size: 9px;
 `;
 
 /** Figma: space-y-1 (gap 4px) between cards; click opens event modal */
-export const TasksList = styled.div`
-  flex: 1;
-  min-height: 0;
-  overflow: auto;
+export const TasksList = styled.div<{ $disabled?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 4px;
-  cursor: pointer;
+`;
+
+export const GhostDropCard = styled.div`
+  border-radius: ${theme.radius.md};
+  border: 1px dashed ${theme.colors.orange[500]};
+  background: rgba(249, 115, 22, 0.08);
+  box-shadow: ${theme.shadow.sm};
+  opacity: 0.85;
+  pointer-events: none;
+  padding: ${theme.spacing[2]};
+  min-height: 54px;
 `;

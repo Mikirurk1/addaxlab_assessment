@@ -1,5 +1,7 @@
 import { StyledSpinner } from './Spinner.styled';
+import { useT } from '@/features/i18n';
 
 export function Spinner() {
-  return <StyledSpinner aria-label="Loading" />;
+  const t = useT();
+  return <StyledSpinner aria-label={t('common.loading')} />;
 }

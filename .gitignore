@@ -6,3 +6,6 @@ dist
 .DS_Store
 figma project
 
+# Uploaded avatars (stored on server)
+server/data/avatars/
+

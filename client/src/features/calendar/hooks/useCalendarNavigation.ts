@@ -4,11 +4,12 @@ import {
   getCalendarGrid,
   getWeekGrid,
   formatWeekRange,
-  MONTHS,
 } from '@/shared/utils/calendar';
 import type { CalendarCell } from '@/shared/utils/calendar';
+import { useT } from '@/features/i18n';
 
 export function useCalendarNavigation() {
+  const t = useT();
   const now = new Date();
   const [current, setCurrent] = useState(() => ({
     year: now.getFullYear(),
@@ -67,13 +68,16 @@ export function useCalendarNavigation() {
     setView(v);
   }, [current.year, current.month]);
 
+  const monthAbbrev = Array.from({ length: 12 }, (_, i) => t(`date.monthAbbrev.${i}`));
+  const monthNames = Array.from({ length: 12 }, (_, i) => t(`date.months.${i}`));
+
   const cells: CalendarCell[] =
-    view === 'month' ? getCalendarGrid(current.year, current.month) : getWeekGrid(weekStart);
+    view === 'month' ? getCalendarGrid(current.year, current.month, monthAbbrev) : getWeekGrid(weekStart, monthAbbrev);
 
   const title =
     view === 'month'
-      ? `${MONTHS[current.month]} ${current.year}`
-      : formatWeekRange(weekStart);
+      ? `${monthNames[current.month] ?? ''} ${current.year}`
+      : formatWeekRange(weekStart, monthAbbrev);
 
   return {
     view,

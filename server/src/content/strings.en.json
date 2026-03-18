@@ -1,0 +1,249 @@
+{
+  "app": {
+    "title": "Personal Calendar"
+  },
+  "header": {
+    "joinCalendar": "Join my calendar",
+    "joinCalendarAria": "Join my calendar",
+    "searchPlaceholder": "Filter events...",
+    "createEvent": "Event",
+    "login": "Log in",
+    "openMenuAria": "Open menu",
+    "adminPanel": "Admin panel",
+    "noNickname": "No nickname"
+  },
+  "auth": {
+    "titles": {
+      "login": "Log in",
+      "register": "Sign up",
+      "reset": "Reset password"
+    },
+    "subtitles": {
+      "login": "Log in to your calendar",
+      "register": "Create a new account",
+      "reset": "Restore access to your account"
+    },
+    "closeAria": "Close",
+    "fullNameLabel": "Full name",
+    "fullNamePlaceholder": "Enter your name",
+    "emailLabel": "Email",
+    "emailPlaceholder": "example@email.com",
+    "passwordLabel": "Password",
+    "passwordPlaceholder": "••••••••",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "••••••••",
+    "forgotPassword": "Forgot password?",
+    "submit": {
+      "login": "Log in",
+      "register": "Sign up",
+      "reset": "Reset password"
+    },
+    "dividerOr": "or",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "goToRegister": "Sign up",
+    "goToLogin": "Log in",
+    "backToLogin": "← Back to login",
+    "validation": {
+      "emailRequired": "Email is required.",
+      "emailInvalid": "Enter a valid email address.",
+      "passwordRequired": "Password is required.",
+      "passwordMin": "Password must be at least {min} characters.",
+      "nameRequired": "Full name is required.",
+      "confirmPasswordRequired": "Please confirm your password.",
+      "passwordsDontMatch": "Passwords do not match.",
+      "signInFailed": "Could not sign in. Try again."
+    }
+  },
+  "common": {
+    "close": "Close",
+    "loading": "Loading"
+  },
+  "admin": {
+    "title": "Admin management",
+    "subtitle": "Super-admin can manage admins.",
+    "subtitleAdmin": "Admin can delete accounts and all their events.",
+    "userEmail": "User email",
+    "emailPlaceholder": "user@email.com",
+    "emailRequired": "Email is required.",
+    "emailInvalid": "Enter a valid email address.",
+    "makeAdmin": "Make admin",
+    "revokeAdmin": "Revoke admin",
+    "deleteUser": "Delete account",
+    "deleteConfirm": "Delete this account and all its events?",
+    "onlyAdmins": "Show only admins",
+    "pageSize": "Users to load",
+    "loadUsers": "Load users",
+    "noUsersFound": "No users found.",
+    "selectedCount": "{count} selected",
+    "selectAll": "Select all",
+    "select": "Select",
+    "nickname": "Nickname",
+    "role": "Role",
+    "makeSelectedAdmins": "Make selected admins",
+    "revokeSelectedAdmins": "Revoke selected admins",
+    "deleteSelectedUsers": "Delete selected users",
+    "deleteSelectedConfirm": "Delete selected accounts and all their events?",
+    "cannotDeleteSuperAdminBulk": "You can't delete super-admin accounts.",
+    "bulkNoTargets": "No valid targets selected.",
+    "bulkPartialError": "Some actions failed.",
+    "bulkSuccess": "Actions completed successfully.",
+    "bulkDeleteSuccess": "Accounts deleted successfully.",
+    "errorGeneric": "Action failed. Try again."
+  },
+  "avatar": {
+    "changePhoto": "Change photo",
+    "removePhoto": "Remove photo",
+    "logout": "Log out",
+    "nicknameLabel": "Nickname",
+    "nicknamePlaceholder": "Unique nickname",
+    "setNickname": "Save",
+    "nicknameTaken": "This nickname is already taken.",
+    "nicknameSaved": "Nickname saved.",
+    "errorFileTooBig": "Image is too large. Maximum size is {max} MB.",
+    "errorInvalidType": "Please choose an image file (e.g. JPG, PNG).",
+    "errorGeneric": "Failed to set avatar. Try again."
+  },
+  "conflict": {
+    "warningTitle": "Warning",
+    "busyTitle": "This time is already booked",
+    "noneFound": "No conflicting events found."
+  },
+  "taskCard": {
+    "editHint": "Click to edit, drag to move"
+  },
+  "calendarCell": {
+    "cardsCountSingular": "{count} card",
+    "cardsCountPlural": "{count} cards",
+    "scrollToSeeAll": "Scroll to see everything",
+    "cannotMoveToPastTitle": "Can't move to the past",
+    "cannotMoveToPastMessage": "Pick today or a future day."
+  },
+  "weekView": {
+    "createEventAt": "Create event at {time}",
+    "adjustStart": "Adjust start",
+    "adjustEnd": "Adjust end",
+    "timePassedTitle": "Time has already passed",
+    "timePassedMessage": "You can't move an event into the past."
+  },
+  "eventSidebar": {
+    "title": "All events",
+    "add": "+ Event",
+    "closeAria": "Close",
+    "searchPlaceholder": "Filter events...",
+    "typeFilterLabel": "Events / Holidays",
+    "typeAll": "All",
+    "typeEvents": "Events",
+    "typeHolidays": "Holidays",
+    "colorFilterLabel": "Filter by color",
+    "resetColorFilter": "× Reset color filter",
+    "countryFilterLabel": "Filter by country",
+    "resetCountryFilter": "× Reset country filter",
+    "empty": "No events or holidays match the selected filters",
+    "footerEvents": "Events",
+    "footerHolidays": "Holidays"
+  },
+  "labels": {
+    "orange": "Orange",
+    "green": "Green",
+    "blue": "Blue",
+    "purple": "Purple",
+    "yellow": "Yellow"
+  },
+  "countries": {
+    "UA": "Ukraine",
+    "US": "United States",
+    "DE": "Germany",
+    "GB": "United Kingdom",
+    "PL": "Poland"
+  },
+  "eventModal": {
+    "titleEdit": "Edit event",
+    "titleNew": "New event",
+    "titleView": "Event details",
+    "unlinkAria": "Unlink from series",
+    "unlinkTitle": "Unlink from series",
+    "deleteAria": "Delete event",
+    "deleteTitle": "Delete",
+    "closeAria": "Close",
+    "eventTitleLabel": "Event title",
+    "eventTitlePlaceholder": "Enter an event title",
+    "dateRangeLabel": "Date range",
+    "startLabel": "Start",
+    "endLabel": "End",
+    "repeatUntilLabel": "Until (repeat until)",
+    "timeLabel": "Time",
+    "recurrenceLabel": "Recurrence",
+    "recurrence": {
+      "none": "Do not repeat",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "weekdays": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "weeklyRequiresDay": "For weekly recurrence, pick at least one day.",
+    "pickRecurrenceParams": "Pick recurrence parameters.",
+    "cannotCreateInPastTime": "You can't create an event in the past.",
+    "helperRule": "Rule: use either “Date range” or “Recurrence”.",
+    "colorsLabel": "Colors",
+    "colorsLabelWithHint": "Colors (multiple allowed)",
+    "countriesLabel": "Countries",
+    "countriesLabelWithHint": "Countries (bind event to countries; empty = all)",
+    "cancel": "Cancel",
+    "save": "Save",
+    "confirmDeleteTitle": "Delete event?",
+    "confirmDeleteBody": "This action can't be undone.",
+    "confirmDelete": "Delete",
+    "confirmUnlinkTitle": "Unlink from series?",
+    "confirmUnlinkBody": "The event will become independent and will no longer be edited together with the series.",
+    "confirmUnlink": "Unlink",
+    "createdBy": "Created by {name}"
+  },
+  "monthNavigator": {
+    "today": "Today",
+    "previous": "Previous",
+    "next": "Next",
+    "week": "Week",
+    "month": "Month"
+  },
+  "date": {
+    "weekdaysShort": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "monthAbbrev": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "months": [
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December"
+    ]
+  }
+}

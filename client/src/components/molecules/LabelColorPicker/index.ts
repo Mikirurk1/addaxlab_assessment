@@ -1,0 +1,2 @@
+export { LabelColorPicker } from './LabelColorPicker';
+
