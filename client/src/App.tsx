@@ -6,6 +6,8 @@ import { AdminModal, AuthModal } from '@/features/auth/ui';
 import { ToastViewport } from '@/features/notifications/ui/ToastViewport';
 import { Spinner } from '@/components/atoms/Spinner';
 import { AppRoot, Centered, Main } from '@/shared/ui/AppLayout.styled';
+import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const { isInitialLoading } = useAppBootstrapData();
@@ -28,6 +30,8 @@ function App() {
       <AuthModal />
       <AdminModal />
       <ToastViewport />
+      <SpeedInsights />
+      <Analytics />
     </AppRoot>
   );
 }
