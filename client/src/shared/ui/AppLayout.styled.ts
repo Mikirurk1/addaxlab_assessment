@@ -111,6 +111,10 @@ export const AppHeader = styled.header`
     align-items: center;
     gap: ${theme.spacing[4]};
   }
+  .btn-avatar {
+    display: inline-flex;
+    align-items: center;
+  }
   .header-right > * {
     flex-shrink: 0;
   }
@@ -192,6 +196,7 @@ export const AppHeader = styled.header`
     }
     .header-avatars {
       order: 1;
+      flex: 1 1 100%;
     }
     .header-right input {
       order: 2;

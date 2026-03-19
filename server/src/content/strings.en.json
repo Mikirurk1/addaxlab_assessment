@@ -3,8 +3,10 @@
     "title": "Personal Calendar"
   },
   "header": {
-    "joinCalendar": "Join my calendar",
-    "joinCalendarAria": "Join my calendar",
+    "joinCalendar": "Share",
+    "joinCalendarAria": "Share calendar",
+    "joinCalendarCopied": "Invite link copied to clipboard.",
+    "joinCalendarCopyFailed": "Could not copy invite link.",
     "searchPlaceholder": "Filter events...",
     "createEvent": "Event",
     "login": "Log in",

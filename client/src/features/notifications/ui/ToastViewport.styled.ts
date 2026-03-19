@@ -128,7 +128,7 @@ export const Content = styled.div`
 
 export const TitleRow = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: ${theme.spacing[2]};
 `;

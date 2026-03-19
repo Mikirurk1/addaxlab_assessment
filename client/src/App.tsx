@@ -11,6 +11,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   const { isInitialLoading } = useAppBootstrapData();
+  const isVercelInsightsEnabled = import.meta.env.VITE_ENABLE_VERCEL_INSIGHTS === 'true';
 
   return (
     <AppRoot>
@@ -30,8 +31,8 @@ function App() {
       <AuthModal />
       <AdminModal />
       <ToastViewport />
-      <SpeedInsights />
-      <Analytics />
+      {isVercelInsightsEnabled ? <SpeedInsights /> : null}
+      {isVercelInsightsEnabled ? <Analytics /> : null}
     </AppRoot>
   );
 }

@@ -7,6 +7,7 @@ interface ImportMetaEnv {
   readonly VITE_NAGER_DATE_API_URL?: string;
   readonly VITE_DEV_PORT?: string;
   readonly VITE_API_PROXY_TARGET?: string;
+  readonly VITE_ENABLE_VERCEL_INSIGHTS?: string;
 }
 
 interface ImportMeta {

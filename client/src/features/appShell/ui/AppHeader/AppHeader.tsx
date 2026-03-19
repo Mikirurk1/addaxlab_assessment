@@ -15,6 +15,7 @@ import { AppHeader as StyledHeader } from '@/shared/ui/AppLayout.styled';
 import { ICONS } from '@/shared/assets/icons';
 import { useT } from '@/features/i18n';
 import { getDisplayNickname } from '@/features/auth/lib/displayNickname';
+import { pushToast } from '@/features/notifications/model/notificationsSlice';
 
 export function AppHeader() {
   const dispatch = useAppDispatch();
@@ -29,6 +30,15 @@ export function AppHeader() {
   const othersOnline = onlineUsers.filter((u) => u.email.trim().toLowerCase() !== currentUserEmail);
   const displayList = othersOnline.slice(0, 3);
   const extraCount = othersOnline.length - 3;
+  const handleJoinCalendar = async () => {
+    const shareUrl = window.location.origin;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      dispatch(pushToast({ kind: 'success', title: t('header.joinCalendarCopied') }));
+    } catch {
+      dispatch(pushToast({ kind: 'error', title: t('header.joinCalendarCopyFailed') }));
+    }
+  };
 
   return (
     <StyledHeader>
@@ -42,7 +52,7 @@ export function AppHeader() {
         <Button
           variant="ghost"
           className="header-link"
-          onClick={() => {}}
+          onClick={handleJoinCalendar}
           aria-label={t('header.joinCalendarAria')}
         >
           {t('header.joinCalendar')}
