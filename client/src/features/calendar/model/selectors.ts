@@ -13,10 +13,13 @@ export const selectHolidaysByDate = (s: RootState) => s.holidays.byDate;
 export const selectTasksByDate = createSelector([selectTasks], (tasks): Record<string, TaskItem[]> => {
   const byDate: Record<string, TaskItem[]> = {};
   for (const t of tasks) {
-    (byDate[t.date] ??= []).push(t);
+    const dateKey = typeof t.date === 'string' ? t.date : undefined;
+    if (!dateKey) continue;
+    (byDate[dateKey] ??= []).push(t);
   }
   for (const key of Object.keys(byDate)) {
-    byDate[key]!.sort((a, b) => a.order - b.order);
+    const list = byDate[key]!;
+    list.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
   }
   return byDate;
 });

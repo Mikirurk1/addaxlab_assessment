@@ -20,8 +20,9 @@ function getErrorMessage(err: unknown): string {
 tasksApi.interceptors.request.use((config) => {
   const user = store.getState().auth.user;
   if (user) {
-    config.headers.set('X-User-Email', user.email);
-    config.headers.set('X-User-Name', user.name);
+    config.headers = config.headers ?? {};
+    (config.headers as Record<string, string>)['X-User-Email'] = user.email;
+    (config.headers as Record<string, string>)['X-User-Name'] = user.name;
   }
   return config;
 });

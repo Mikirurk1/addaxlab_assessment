@@ -105,7 +105,9 @@ export function EventModal() {
   const tasksByDate = useMemo(() => {
     const map: Record<string, typeof allTasks> = {};
     for (const t of allTasks) {
-      (map[t.date] ??= []).push(t);
+      const dateKey = typeof t.date === 'string' ? t.date : undefined;
+      if (!dateKey) continue;
+      (map[dateKey] ??= []).push(t);
     }
     return map;
   }, [allTasks]);

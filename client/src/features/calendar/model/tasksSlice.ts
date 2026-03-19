@@ -136,7 +136,15 @@ const tasksSlice = createSlice({
       })
       .addCase(fetchTasks.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload ?? [];
+        const raw = action.payload ?? [];
+        // Filter out malformed tasks (e.g. from API inconsistencies) to prevent TypeError in UI
+        state.items = raw.filter(
+          (t): t is TaskItem =>
+            t != null &&
+            typeof (t as TaskItem)._id === 'string' &&
+            typeof (t as TaskItem).date === 'string' &&
+            typeof (t as TaskItem).title === 'string'
+        );
         state.error = null;
       })
       .addCase(fetchTasks.rejected, (state, action) => {

@@ -35,6 +35,8 @@
     "emailPlaceholder": "example@email.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "••••••••",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "confirmPasswordLabel": "Confirm password",
     "confirmPasswordPlaceholder": "••••••••",
     "forgotPassword": "Forgot password?",

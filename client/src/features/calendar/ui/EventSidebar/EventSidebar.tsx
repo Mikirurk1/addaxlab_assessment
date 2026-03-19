@@ -51,7 +51,10 @@ import {
 } from './EventSidebar.styled';
 
 function formatTaskDate(task: TaskItem, monthAbbrev: string[]): string {
-  const [y, m, d] = task.date.split('-').map(Number);
+  if (typeof task.date !== 'string' || !task.date) return '';
+  const parts = task.date.split('-').map(Number);
+  const [y, m, d] = parts;
+  if (Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return '';
   const monthName = monthAbbrev[m - 1] ?? '';
   const time =
     task.startTime && task.endTime ? ` • ${task.startTime} - ${task.endTime}` : '';
@@ -94,7 +97,7 @@ export function EventSidebar() {
     }
     if (searchQuery.trim()) {
       const q = searchQuery.trim().toLowerCase();
-      list = list.filter((t) => t.title.toLowerCase().includes(q));
+      list = list.filter((t) => (t.title ?? '').toLowerCase().includes(q));
     }
     return list;
   }, [tasks, colorFilter, searchQuery]);

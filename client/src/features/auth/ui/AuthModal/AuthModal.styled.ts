@@ -106,8 +106,49 @@ export const Input = styled(Field)`
   }
 `;
 
-export const InputWrap = styled.div`
+export const InputWrap = styled.div<{ $hasToggle?: boolean }>`
   position: relative;
+  ${(p) =>
+    p.$hasToggle
+      ? `
+    & input {
+      padding-right: 44px;
+    }
+  `
+      : ''}
+`;
+
+export const PasswordToggleBtn = styled.button`
+  position: absolute;
+  right: ${theme.spacing[3]};
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: ${theme.colors.gray[400]};
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: ${theme.radius.sm};
+
+  &:hover {
+    color: ${theme.colors.gray[600]};
+  }
+
+  &:focus-visible {
+    outline: 2px solid ${theme.colors.orange[500]};
+    outline-offset: 2px;
+  }
+
+  svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+  }
 `;
 
 export const InputIcon = styled.span`

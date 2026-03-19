@@ -4,8 +4,10 @@ import { nowMinutes, parseTimeToMinutes } from '@/shared/utils/time';
 
 export function isTaskInPast(task: TaskItem, now: Date = new Date()): boolean {
   const todayKey = toDateKey(now);
-  if (task.date < todayKey) return true;
-  if (task.date > todayKey) return false;
+  const taskDate = task.date;
+  if (typeof taskDate !== 'string' || !taskDate) return false;
+  if (taskDate < todayKey) return true;
+  if (taskDate > todayKey) return false;
 
   const curMin = nowMinutes(now);
   const endMin = parseTimeToMinutes(task.endTime);

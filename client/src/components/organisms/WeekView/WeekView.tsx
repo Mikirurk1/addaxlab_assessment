@@ -102,7 +102,7 @@ export function WeekView({ cells, tasksByDate, searchQuery }: WeekViewProps) {
     return cells.map((cell) => {
       const tasks = (tasksByDate[cell.dateKey] ?? []).filter((task) => {
         if (!searchQuery.trim()) return true;
-        return task.title.toLowerCase().includes(searchQuery.trim().toLowerCase());
+        return (task.title ?? '').toLowerCase().includes(searchQuery.trim().toLowerCase());
       });
       return { dateKey: cell.dateKey, label: cell.label, tasks };
     });

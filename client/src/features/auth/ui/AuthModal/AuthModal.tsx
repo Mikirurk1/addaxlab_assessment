@@ -19,6 +19,7 @@ import {
   Input,
   InputWrap,
   InputIcon,
+  PasswordToggleBtn,
   FieldError,
   SubmitBtn,
   LinkBtn,
@@ -40,10 +41,14 @@ export function AuthModal() {
   const t = useT();
   const [view, setView] = useState<View>('login');
   const [errors, setErrors] = useState<Errors>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const resetForm = () => {
     dispatch(resetAuthForm());
     setErrors({});
+    setShowPassword(false);
+    setShowConfirmPassword(false);
   };
 
   const switchView = (v: View) => {
@@ -184,17 +189,34 @@ export function AuthModal() {
           {view !== 'reset' && (
             <FormGroup>
               <Label>{t('auth.passwordLabel')}</Label>
-              <InputWrap>
+              <InputWrap $hasToggle>
                 <InputIcon aria-hidden>
                   <img src={icons.lock} alt="" aria-hidden />
                 </InputIcon>
                 <Input
                   bare
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => dispatch(setAuthFormField({ key: 'password', value: e.target.value }))}
                   placeholder={t('auth.passwordPlaceholder')}
                 />
+                <PasswordToggleBtn
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                >
+                  {showPassword ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </PasswordToggleBtn>
               </InputWrap>
               {errors.password ? <FieldError role="alert">{errors.password}</FieldError> : null}
             </FormGroup>
@@ -203,17 +225,34 @@ export function AuthModal() {
           {view === 'register' && (
             <FormGroup>
               <Label>{t('auth.confirmPasswordLabel')}</Label>
-              <InputWrap>
+              <InputWrap $hasToggle>
                 <InputIcon aria-hidden>
                   <img src={icons.lock} alt="" aria-hidden />
                 </InputIcon>
                 <Input
                   bare
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   value={confirmPassword}
                   onChange={(e) => dispatch(setAuthFormField({ key: 'confirmPassword', value: e.target.value }))}
                   placeholder={t('auth.confirmPasswordPlaceholder')}
                 />
+                <PasswordToggleBtn
+                  type="button"
+                  onClick={() => setShowConfirmPassword((v) => !v)}
+                  aria-label={showConfirmPassword ? t('auth.hidePassword') : t('auth.showPassword')}
+                >
+                  {showConfirmPassword ? (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </PasswordToggleBtn>
               </InputWrap>
               {errors.confirmPassword ? <FieldError role="alert">{errors.confirmPassword}</FieldError> : null}
             </FormGroup>
