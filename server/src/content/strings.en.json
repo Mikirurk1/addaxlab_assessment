@@ -11,6 +11,9 @@
     "createEvent": "Event",
     "login": "Log in",
     "openMenuAria": "Open menu",
+    "closeMenuAria": "Close menu",
+    "eventFilterAria": "Event filter",
+    "mobileMenuTitle": "Menu",
     "adminPanel": "Admin panel",
     "noNickname": "No nickname"
   },
@@ -60,6 +63,18 @@
   "common": {
     "close": "Close",
     "loading": "Loading"
+  },
+  "welcomeModal": {
+    "title": "More features for registered users",
+    "subtitle": "Sign in to unlock the full potential of your calendar",
+    "gotIt": "Got it",
+    "features": {
+      "createEvents": "Create, edit, and delete events with drag & drop",
+      "nickname": "Set a unique nickname visible to other users",
+      "avatar": "Upload a profile photo for your avatar",
+      "onlineUsers": "See who's online and collaborating in real time",
+      "adminPanel": "Admin panel: manage users and permissions (admin only)"
+    }
   },
   "admin": {
     "title": "Admin management",

@@ -19,6 +19,7 @@ export {
   setEventModalSelectedTime,
   setEditModalTaskId,
   setSidebarOpen,
+  setMobileMenuOpen,
   setSidebarTypeFilter,
   toggleSidebarColorFilter,
   resetSidebarColorFilter,

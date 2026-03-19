@@ -1,4 +1,4 @@
-import { AppHeader, useAppBootstrapData } from '@/features/appShell';
+import { AppHeader, MobileMenu, WelcomeModal, useAppBootstrapData } from '@/features/appShell';
 import { CalendarPage } from '@/features/calendar/app';
 import { ConflictModal, EventModal } from '@/features/calendar/modals';
 import { EventSidebar } from '@/features/calendar/ui/EventSidebar';
@@ -28,8 +28,10 @@ function App() {
       <EventModal />
       <ConflictModal />
       <EventSidebar />
+      <MobileMenu />
       <AuthModal />
       <AdminModal />
+      <WelcomeModal />
       <ToastViewport />
       {isVercelInsightsEnabled ? <SpeedInsights /> : null}
       {isVercelInsightsEnabled ? <Analytics /> : null}

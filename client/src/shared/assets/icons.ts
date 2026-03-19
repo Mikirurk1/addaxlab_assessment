@@ -1,6 +1,7 @@
 export const ICONS = {
   calendarWhite: "/assets/images/icon/calendar-white.svg",
   filterWhite: "/assets/images/icon/filter-white.svg",
+  burgerWhite: "/assets/images/icon/burger-white.svg",
   loginWhite: "/assets/images/icon/login-white.svg",
   infoBlue: "/assets/images/icon/info-blue.svg",
   successGreen: "/assets/images/icon/success-green.svg",

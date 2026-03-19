@@ -4,6 +4,7 @@ interface UiState {
   searchQuery: string;
   eventModalOpen: boolean;
   sidebarOpen: boolean;
+  mobileMenuOpen: boolean;
   eventModalSelectedDate: string | null;
   /** Pre-fill time when opening create from week slot (e.g. "14:00") */
   eventModalSelectedTime: string | null;
@@ -30,6 +31,7 @@ const initialState: UiState = {
   searchQuery: '',
   eventModalOpen: false,
   sidebarOpen: false,
+  mobileMenuOpen: false,
   eventModalSelectedDate: null,
   eventModalSelectedTime: null,
   editModalTaskId: null,
@@ -70,6 +72,9 @@ const uiSlice = createSlice({
     },
     setSidebarOpen: (state, action: { payload: boolean }) => {
       state.sidebarOpen = action.payload;
+    },
+    setMobileMenuOpen: (state, action: { payload: boolean }) => {
+      state.mobileMenuOpen = action.payload;
     },
     setSidebarTypeFilter: (state, action: { payload: 'all' | 'events' | 'holidays' }) => {
       state.sidebarTypeFilter = action.payload;
@@ -138,6 +143,7 @@ export const {
   setEventModalSelectedTime,
   setEditModalTaskId,
   setSidebarOpen,
+  setMobileMenuOpen,
   setSidebarTypeFilter,
   toggleSidebarColorFilter,
   resetSidebarColorFilter,

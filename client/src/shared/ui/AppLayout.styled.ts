@@ -157,7 +157,8 @@ export const AppHeader = styled.header`
   .btn-login:hover {
     background: rgba(255, 255, 255, 0.3);
   }
-  .btn-menu {
+  .btn-filter,
+  .btn-burger {
     padding: 0;
     width: var(--header-control-h);
     height: var(--header-control-h);
@@ -171,49 +172,57 @@ export const AppHeader = styled.header`
     align-items: center;
     justify-content: center;
   }
-  .btn-menu:hover {
+  .btn-filter:hover,
+  .btn-burger:hover {
     background: ${theme.colors.orange[600]};
+  }
+
+  .header-mobile-only {
+    display: none;
   }
 
   @media (max-width: 768px) {
     padding: 10px 12px;
     gap: ${theme.spacing[3]};
-    --header-control-h: 38px;
+    --header-control-h: 36px;
+    flex-wrap: nowrap;
 
     .header-left {
-      width: 100%;
-      justify-content: space-between;
-      gap: ${theme.spacing[3]};
+      flex: 0 0 auto;
       min-width: 0;
+      gap: ${theme.spacing[2]};
     }
-    .header-link {
-      display: none;
+    .header-left h1 {
+      font-size: ${theme.font.size.base};
+    }
+    .header-calendar-icon img {
+      width: 18px;
+      height: 18px;
+    }
+    .header-desktop-only {
+      display: none !important;
+    }
+    .header-mobile-only {
+      display: inline-flex !important;
     }
     .header-right {
-      width: 100%;
-      flex-wrap: wrap;
-      gap: ${theme.spacing[3]};
-    }
-    .header-avatars {
-      order: 1;
-      flex: 1 1 100%;
-    }
-    .header-right input {
-      order: 2;
-      flex: 1 1 100%;
+      flex: 1 1 auto;
+      justify-content: flex-end;
+      flex-wrap: nowrap;
+      gap: ${theme.spacing[2]};
       min-width: 0;
     }
-    .btn-event {
-      order: 3;
+    .header-avatars {
       flex: 1 1 auto;
-      justify-content: center;
+      min-width: 0;
+      overflow: hidden;
     }
-    .btn-login {
-      order: 3;
-      flex: 0 0 auto;
+    .header-avatars-list {
+      flex-shrink: 1;
     }
-    .btn-menu {
-      order: 3;
+    .header-avatars-more {
+      flex-shrink: 0;
+      font-size: 12px;
     }
   }
 `;

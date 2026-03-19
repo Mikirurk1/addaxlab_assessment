@@ -12,6 +12,8 @@ export const Nav = styled.nav`
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
+    flex-direction: row;
+    flex-wrap: wrap;
     padding: ${theme.spacing[3]} ${theme.spacing[3]};
     gap: ${theme.spacing[3]};
   }
@@ -23,6 +25,11 @@ export const NavLeft = styled.div`
   align-items: center;
   gap: ${theme.spacing[2]};
   min-width: 0;
+
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+  }
 `;
 
 export const NavCenter = styled.div`
@@ -31,6 +38,28 @@ export const NavCenter = styled.div`
   align-items: center;
   justify-content: center;
   min-width: 0;
+
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+    order: -1;
+    width: 100%;
+  }
+`;
+
+export const MonthTitle = styled.h2`
+  margin: 0;
+  font-size: ${theme.font.size.xl};
+  font-weight: ${theme.font.weight.semibold};
+  color: ${theme.colors.gray[800]};
+  text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: ${theme.font.size.base};
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+  }
 `;
 
 export const NavRight = styled.div`
@@ -40,14 +69,11 @@ export const NavRight = styled.div`
   justify-content: flex-end;
   gap: ${theme.spacing[2]};
   min-width: 0;
-`;
 
-export const MonthTitle = styled.h2`
-  margin: 0;
-  font-size: ${theme.font.size.xl};
-  font-weight: ${theme.font.weight.semibold};
-  color: ${theme.colors.gray[800]};
-  text-align: center;
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+    justify-content: flex-end;
+  }
 `;
 
 export const ViewToggle = styled.div`
@@ -84,6 +110,14 @@ export const ViewToggle = styled.div`
   & button[data-active='true']:hover {
     background: ${theme.colors.orange[600]};
   }
+
+  @media (max-width: 768px) {
+    & button {
+      min-width: 56px;
+      padding: 6px 10px;
+      font-size: ${theme.font.size.xs};
+    }
+  }
 `;
 
 export const NavSquareButton = styled(Button)`
@@ -104,6 +138,12 @@ export const NavSquareButton = styled(Button)`
     background: ${theme.colors.gray[100]};
     color: ${theme.colors.gray[800]};
   }
+
+  @media (max-width: 768px) {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
 `;
 
 export const TodayButton = styled(Button)`
@@ -122,5 +162,11 @@ export const TodayButton = styled(Button)`
   &:focus-visible {
     outline: none;
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.30);
+  }
+
+  @media (max-width: 768px) {
+    height: 32px;
+    padding: 4px 10px;
+    font-size: ${theme.font.size.sm};
   }
 `;

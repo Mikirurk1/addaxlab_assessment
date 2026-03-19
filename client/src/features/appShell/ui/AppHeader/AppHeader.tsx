@@ -5,6 +5,7 @@ import {
   setEventModalSelectedTime,
   setEditModalTaskId,
   setSidebarOpen,
+  setMobileMenuOpen,
 } from '@/features/calendar/model';
 import { setAuthModalOpen } from '@/features/auth/model';
 import { useOnlineUsersSocket } from '@/features/appShell/hooks';
@@ -51,7 +52,7 @@ export function AppHeader() {
         </div>
         <Button
           variant="ghost"
-          className="header-link"
+          className="header-link header-desktop-only"
           onClick={handleJoinCalendar}
           aria-label={t('header.joinCalendarAria')}
         >
@@ -76,15 +77,17 @@ export function AppHeader() {
             <span className="header-avatars-more">+{extraCount}</span>
           )}
         </div>
-        <SearchBar
-          value={searchQuery}
-          onChange={(v) => dispatch(setSearchQuery(v))}
-          placeholder={t('header.searchPlaceholder')}
-          variant="header"
-        />
+        <div className="header-desktop-only header-search-wrap">
+          <SearchBar
+            value={searchQuery}
+            onChange={(v) => dispatch(setSearchQuery(v))}
+            placeholder={t('header.searchPlaceholder')}
+            variant="header"
+          />
+        </div>
         {currentUser && (
           <Button
-            className="btn-event"
+            className="btn-event header-desktop-only"
             onClick={() => {
               dispatch(setEditModalTaskId(null));
               dispatch(setEventModalSelectedTime(null));
@@ -96,7 +99,7 @@ export function AppHeader() {
           </Button>
         )}
         {currentUser ? (
-          <div className="btn-avatar" aria-label={currentUser.name}>
+          <div className="btn-avatar header-desktop-only" aria-label={currentUser.name}>
             <UserAvatar
               name={currentUser.name}
               email={currentUser.email}
@@ -106,7 +109,7 @@ export function AppHeader() {
           </div>
         ) : (
           <Button
-            className="btn-login"
+            className="btn-login header-desktop-only"
             onClick={() => dispatch(setAuthModalOpen(true))}
             startIcon={<img src={ICONS.loginWhite} width={16} height={16} alt="" aria-hidden />}
           >
@@ -114,11 +117,18 @@ export function AppHeader() {
           </Button>
         )}
         <Button
-          className="btn-menu"
+          className="btn-filter"
           onClick={() => dispatch(setSidebarOpen(true))}
-          aria-label={t('header.openMenuAria')}
+          aria-label={t('header.eventFilterAria')}
         >
           <img src={ICONS.filterWhite} width={18} height={18} alt="" aria-hidden />
+        </Button>
+        <Button
+          className="btn-burger header-mobile-only"
+          onClick={() => dispatch(setMobileMenuOpen(true))}
+          aria-label={t('header.openMenuAria')}
+        >
+          <img src={ICONS.burgerWhite} width={20} height={20} alt="" aria-hidden />
         </Button>
       </div>
     </StyledHeader>
