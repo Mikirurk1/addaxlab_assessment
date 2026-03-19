@@ -1,17 +1,17 @@
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   setSearchQuery,
   setEventModalOpen,
   setEventModalSelectedTime,
   setEditModalTaskId,
   setMobileMenuOpen,
-} from '@/features/calendar/model';
-import { setAuthModalOpen } from '@/features/auth/model';
-import { SearchBar } from '@/components/molecules/SearchBar';
-import { UserAvatar } from '@/components/molecules/UserAvatar';
-import { Button } from '@/components/atoms/Button';
-import { useT } from '@/features/i18n';
-import { pushToast } from '@/features/notifications/model/notificationsSlice';
+} from "@/features/calendar/model";
+import { setAuthModalOpen } from "@/features/auth/model";
+import { SearchBar } from "@/components/molecules/SearchBar";
+import { UserAvatar } from "@/components/molecules/UserAvatar";
+import { Button } from "@/components/atoms/Button";
+import { useT } from "@/features/i18n";
+import { pushToast } from "@/features/notifications/model/notificationsSlice";
 import {
   Backdrop,
   Panel,
@@ -24,7 +24,7 @@ import {
   AvatarSection,
   AddEventBtn,
   ShareBtn,
-} from './MobileMenu.styled';
+} from "./MobileMenu.styled";
 
 export function MobileMenu() {
   const dispatch = useAppDispatch();
@@ -37,10 +37,14 @@ export function MobileMenu() {
     const shareUrl = window.location.origin;
     try {
       await navigator.clipboard.writeText(shareUrl);
-      dispatch(pushToast({ kind: 'success', title: t('header.joinCalendarCopied') }));
+      dispatch(
+        pushToast({ kind: "success", title: t("header.joinCalendarCopied") }),
+      );
       dispatch(setMobileMenuOpen(false));
     } catch {
-      dispatch(pushToast({ kind: 'error', title: t('header.joinCalendarCopyFailed') }));
+      dispatch(
+        pushToast({ kind: "error", title: t("header.joinCalendarCopyFailed") }),
+      );
     }
   };
 
@@ -63,11 +67,11 @@ export function MobileMenu() {
       <Backdrop onClick={() => dispatch(setMobileMenuOpen(false))} />
       <Panel>
         <MenuHeader>
-          <MenuTitle>{t('header.mobileMenuTitle')}</MenuTitle>
+          <MenuTitle>{t("header.mobileMenuTitle")}</MenuTitle>
           <CloseBtn
             type="button"
             onClick={() => dispatch(setMobileMenuOpen(false))}
-            aria-label={t('header.closeMenuAria')}
+            aria-label={t("header.closeMenuAria")}
           >
             ×
           </CloseBtn>
@@ -90,31 +94,37 @@ export function MobileMenu() {
                   dispatch(setMobileMenuOpen(false));
                 }}
               >
-                {t('header.login')}
+                {t("header.login")}
               </Button>
             )}
           </AvatarSection>
 
           <MenuSection>
-            <MenuSectionLabel>{t('header.searchPlaceholder')}</MenuSectionLabel>
+            <MenuSectionLabel>{t("header.searchPlaceholder")}</MenuSectionLabel>
             <SearchBar
               value={searchQuery}
               onChange={(v) => dispatch(setSearchQuery(v))}
-              placeholder={t('header.searchPlaceholder')}
+              placeholder={t("header.searchPlaceholder")}
             />
           </MenuSection>
 
           <MenuSection>
-            <MenuSectionLabel>{t('header.createEvent')}</MenuSectionLabel>
-            <AddEventBtn onClick={handleCreateEvent} startIcon={<span aria-hidden>+</span>}>
-              {t('header.createEvent')}
+            <MenuSectionLabel>{t("header.createEvent")}</MenuSectionLabel>
+            <AddEventBtn
+              onClick={handleCreateEvent}
+              startIcon={<span aria-hidden>+</span>}
+            >
+              {t("header.createEvent")}
             </AddEventBtn>
           </MenuSection>
 
           <MenuSection>
-            <MenuSectionLabel>{t('header.joinCalendar')}</MenuSectionLabel>
-            <ShareBtn onClick={handleJoinCalendar} aria-label={t('header.joinCalendarAria')}>
-              {t('header.joinCalendar')}
+            <MenuSectionLabel>{t("header.joinCalendar")}</MenuSectionLabel>
+            <ShareBtn
+              onClick={handleJoinCalendar}
+              aria-label={t("header.joinCalendarAria")}
+            >
+              {t("header.joinCalendar")}
             </ShareBtn>
           </MenuSection>
         </MenuContent>

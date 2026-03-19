@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from '@/store';
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   setSearchQuery,
   setEventModalOpen,
@@ -6,17 +6,17 @@ import {
   setEditModalTaskId,
   setSidebarOpen,
   setMobileMenuOpen,
-} from '@/features/calendar/model';
-import { setAuthModalOpen } from '@/features/auth/model';
-import { useOnlineUsersSocket } from '@/features/appShell/hooks';
-import { SearchBar } from '@/components/molecules/SearchBar';
-import { UserAvatar } from '@/components/molecules/UserAvatar';
-import { Button } from '@/components/atoms/Button';
-import { AppHeader as StyledHeader } from '@/shared/ui/AppLayout.styled';
-import { ICONS } from '@/shared/assets/icons';
-import { useT } from '@/features/i18n';
-import { getDisplayNickname } from '@/features/auth/lib/displayNickname';
-import { pushToast } from '@/features/notifications/model/notificationsSlice';
+} from "@/features/calendar/model";
+import { setAuthModalOpen } from "@/features/auth/model";
+import { useOnlineUsersSocket } from "@/features/appShell/hooks";
+import { SearchBar } from "@/components/molecules/SearchBar";
+import { UserAvatar } from "@/components/molecules/UserAvatar";
+import { Button } from "@/components/atoms/Button";
+import { AppHeader as StyledHeader } from "@/shared/ui/AppLayout.styled";
+import { ICONS } from "@/shared/assets/icons";
+import { useT } from "@/features/i18n";
+import { getDisplayNickname } from "@/features/auth/lib/displayNickname";
+import { pushToast } from "@/features/notifications/model/notificationsSlice";
 
 export function AppHeader() {
   const dispatch = useAppDispatch();
@@ -27,17 +27,23 @@ export function AppHeader() {
 
   useOnlineUsersSocket();
 
-  const currentUserEmail = currentUser?.email?.trim().toLowerCase() ?? '';
-  const othersOnline = onlineUsers.filter((u) => u.email.trim().toLowerCase() !== currentUserEmail);
+  const currentUserEmail = currentUser?.email?.trim().toLowerCase() ?? "";
+  const othersOnline = onlineUsers.filter(
+    (u) => u.email.trim().toLowerCase() !== currentUserEmail,
+  );
   const displayList = othersOnline.slice(0, 3);
   const extraCount = othersOnline.length - 3;
   const handleJoinCalendar = async () => {
     const shareUrl = window.location.origin;
     try {
       await navigator.clipboard.writeText(shareUrl);
-      dispatch(pushToast({ kind: 'success', title: t('header.joinCalendarCopied') }));
+      dispatch(
+        pushToast({ kind: "success", title: t("header.joinCalendarCopied") }),
+      );
     } catch {
-      dispatch(pushToast({ kind: 'error', title: t('header.joinCalendarCopyFailed') }));
+      dispatch(
+        pushToast({ kind: "error", title: t("header.joinCalendarCopyFailed") }),
+      );
     }
   };
 
@@ -46,17 +52,23 @@ export function AppHeader() {
       <div className="header-left">
         <div className="header-title-wrap">
           <span className="header-calendar-icon" aria-hidden>
-            <img src={ICONS.calendarWhite} width={20} height={20} alt="" aria-hidden />
+            <img
+              src={ICONS.calendarWhite}
+              width={20}
+              height={20}
+              alt=""
+              aria-hidden
+            />
           </span>
-          <h1>{t('app.title')}</h1>
+          <h1>{t("app.title")}</h1>
         </div>
         <Button
           variant="ghost"
           className="header-link header-desktop-only"
           onClick={handleJoinCalendar}
-          aria-label={t('header.joinCalendarAria')}
+          aria-label={t("header.joinCalendarAria")}
         >
-          {t('header.joinCalendar')}
+          {t("header.joinCalendar")}
         </Button>
       </div>
       <div className="header-right">
@@ -81,7 +93,7 @@ export function AppHeader() {
           <SearchBar
             value={searchQuery}
             onChange={(v) => dispatch(setSearchQuery(v))}
-            placeholder={t('header.searchPlaceholder')}
+            placeholder={t("header.searchPlaceholder")}
             variant="header"
           />
         </div>
@@ -95,11 +107,14 @@ export function AppHeader() {
             }}
             startIcon={<span aria-hidden>+</span>}
           >
-            {t('header.createEvent')}
+            {t("header.createEvent")}
           </Button>
         )}
         {currentUser ? (
-          <div className="btn-avatar header-desktop-only" aria-label={currentUser.name}>
+          <div
+            className="btn-avatar header-desktop-only"
+            aria-label={currentUser.name}
+          >
             <UserAvatar
               name={currentUser.name}
               email={currentUser.email}
@@ -111,27 +126,46 @@ export function AppHeader() {
           <Button
             className="btn-login header-desktop-only"
             onClick={() => dispatch(setAuthModalOpen(true))}
-            startIcon={<img src={ICONS.loginWhite} width={16} height={16} alt="" aria-hidden />}
+            startIcon={
+              <img
+                src={ICONS.loginWhite}
+                width={16}
+                height={16}
+                alt=""
+                aria-hidden
+              />
+            }
           >
-            {t('header.login')}
+            {t("header.login")}
           </Button>
         )}
         <Button
           className="btn-filter"
           onClick={() => dispatch(setSidebarOpen(true))}
-          aria-label={t('header.eventFilterAria')}
+          aria-label={t("header.eventFilterAria")}
         >
-          <img src={ICONS.filterWhite} width={18} height={18} alt="" aria-hidden />
+          <img
+            src={ICONS.filterWhite}
+            width={18}
+            height={18}
+            alt=""
+            aria-hidden
+          />
         </Button>
         <Button
           className="btn-burger header-mobile-only"
           onClick={() => dispatch(setMobileMenuOpen(true))}
-          aria-label={t('header.openMenuAria')}
+          aria-label={t("header.openMenuAria")}
         >
-          <img src={ICONS.burgerWhite} width={20} height={20} alt="" aria-hidden />
+          <img
+            src={ICONS.burgerWhite}
+            width={20}
+            height={20}
+            alt=""
+            aria-hidden
+          />
         </Button>
       </div>
     </StyledHeader>
   );
 }
-
